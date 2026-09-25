@@ -1,0 +1,16 @@
+{
+  "name": "ORCA — Marine Ecosystem Reasoning with Collaborative Agents",
+  "short_name": "ORCA",
+  "description": "AI-powered marine environmental intelligence and decision-support platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1118",
+  "theme_color": "#0e1824",
+  "icons": [
+    {
+      "src": "/orca-icon.jpeg",
+      "sizes": "192x192 512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+name: Render Keep-Alive Cron
+
+# Runs every 14 minutes to prevent Render free instance from spinning down (15 min idle timeout)
+on:
+  schedule:
+    - cron: '*/14 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions UI
+
+jobs:
+  ping-render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render Health Endpoint
+        env:
+          RENDER_URL: ${{ secrets.RENDER_URL || vars.RENDER_URL || 'https://orca-marine-intelligence.onrender.com' }}
+        run: |
+          TARGET_URL="${RENDER_URL%/}/api/health"
+          echo "Pinging Render Web Service: $TARGET_URL"
+          RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$TARGET_URL")
+          echo "HTTP Status Code: $RESPONSE_CODE"
+          if [ "$RESPONSE_CODE" -ge 200 ] && [ "$RESPONSE_CODE" -lt 400 ]; then
+            echo "Render service is awake and healthy!"
+          else
+            echo "Warning: Response code $RESPONSE_CODE (server may be cold-booting)"
+          fi
